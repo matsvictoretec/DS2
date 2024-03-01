@@ -1,18 +1,26 @@
 <?php
 $nome = $_POST["txtNome"];
-$sobrenome = $_POST["txtSobrenome"];
-$email = $_POST["txtEmail"];
-$formacao = $_POST["txtFormacao"];
-$emprego = $_POST["txtEmprego"];
+$valor = $_POST["txtValorCompra"];
+$formaPag = $_POST["cmbPag"];
 
-$msg = "Os seguintes dados foram cadastrados com sucesso!";
+if ($formaPag === "deposito") {
+    $vFormapag = "Depósito";
+    $desconto = 0.1;
+} elseif($formaPag === "boleto") {
+    $vFormapag = "Boleto";
+    $desconto = 0.08;
+} else {
+    $vFormapag = "Cartão de Crédito";
+    $desconto = 0;
+}
 
-$dadoscad = $nome."<br/>";
-$dadoscad .= $sobrenome."<br/>";
-$dadoscad .= $email."<br/>";
-$dadoscad .= $formacao."<br/>";
-$dadoscad .= $emprego."<br/>";
+$valorDesconto = $valor * $desconto;
+$valorTotal = $valor - $valorDesconto;
 
+$vValor = "R$ ".number_format($valor, 2, ",", ".");
+$vDesconto = $desconto > 0 ? ($desconto * 100)."%" : "Sem desconto";
+$vEconomia = "R$ ".number_format($valorDesconto, 2, ",", ".");
+$vTotal = "R$ ".number_format($valorTotal, 2, ",", ".");
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -32,8 +40,13 @@ $dadoscad .= $emprego."<br/>";
     <body>
 
         <div class="w3-container w3-teal">
-            <h2><?= $msg; ?></h2>
-            <p><?= $dadoscad; ?></p>
+            <h2>PROMOÇÃO DE MÊS DE ANIVERSÁRIO!</h2>
+            <p><?= $nome."!"; ?></p>
+            <p>Valor da compra sem desconto: <b><?= $vValor; ?></b></p>
+            <p>Forma de pagamento escolhida: <b><?= $vFormapag; ?></b></p>
+            <p>Desconto de: <b><?= $vDesconto; ?></b></p>
+            <p>Você economizou: <b><?= $vEconomia; ?></b></p>
+            <p>Valor total à Pagar: <b><?= $vTotal; ?></b></p>
         </div>
     </body>
 
